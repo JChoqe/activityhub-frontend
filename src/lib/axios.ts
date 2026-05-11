@@ -12,11 +12,11 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// Redirige al login si el token expira o es inválido
+// Redirige al login solo si el token es inválido/expirado (401), no en 403 (permisos insuficientes)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    if (error.response?.status === 401) {
       const isAuthRoute = window.location.pathname === '/login' || window.location.pathname === '/register'
       if (!isAuthRoute) {
         localStorage.removeItem('token')

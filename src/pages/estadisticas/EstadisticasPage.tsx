@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { usuarioService } from '@/services/usuario.service'
+import { getImgUrl } from '@/lib/utils'
 import type { MisEstadisticas, RankingEntry } from '@/types'
-
-const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace('/api', '') ?? ''
-
-function getImgUrl(foto?: string | null) {
-  if (!foto) return null
-  return foto.startsWith('http') ? foto : `${BASE_URL}${foto}`
-}
 
 const disciplinaLabel: Record<string, string> = {
   NOGI: 'NOGI',

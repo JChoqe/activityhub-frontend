@@ -3,22 +3,8 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { productosService } from '@/services/productos.service'
 import { carritoService } from '@/services/carrito.service'
+import { getImgUrl, apiMsg } from '@/lib/utils'
 import type { Producto, Talla, Categoria } from '@/types'
-
-const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace('/api', '') ?? ''
-
-function getImgUrl(img?: string | null) {
-  if (!img) return null
-  return img.startsWith('http') ? img : `${BASE_URL}${img}`
-}
-
-function apiMsg(e: unknown, fallback: string) {
-  if (e && typeof e === 'object' && 'response' in e) {
-    const r = (e as { response?: { data?: { message?: string } } }).response
-    return r?.data?.message ?? fallback
-  }
-  return fallback
-}
 
 const TALLAS: Talla[] = ['S', 'M', 'L', 'XL', 'XXL']
 const CATEGORIAS: Categoria[] = ['ROPA', 'EQUIPAMIENTO', 'ACCESORIOS']

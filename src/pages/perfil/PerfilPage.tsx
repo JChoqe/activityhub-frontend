@@ -2,22 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { usuarioService } from '@/services/usuario.service'
+import { getImgUrl, apiMsg } from '@/lib/utils'
 import type { Usuario } from '@/types'
-
-const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace('/api', '') ?? ''
-
-function getImgUrl(foto?: string | null) {
-  if (!foto) return null
-  return foto.startsWith('http') ? foto : `${BASE_URL}${foto}`
-}
-
-function apiMsg(e: unknown, fallback: string) {
-  if (e && typeof e === 'object' && 'response' in e) {
-    const r = (e as { response?: { data?: { message?: string } } }).response
-    return r?.data?.message ?? fallback
-  }
-  return fallback
-}
 
 const inputCls =
   'w-full bg-zinc-800 text-white placeholder-zinc-500 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-cyan-500 transition'
