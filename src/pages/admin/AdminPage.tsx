@@ -40,8 +40,10 @@ interface UserRowProps {
 }
 
 function UserRow({ usuario, roleLoading, deleteLoading, onRoleChange, onDelete }: UserRowProps) {
+  const [pendingRole, setPendingRole] = useState<Role>(usuario.role)
   const imgUrl = getImgUrl(usuario.foto)
   const inicial = usuario.nombre.charAt(0).toUpperCase()
+  const hasChanges = pendingRole !== usuario.role
 
   return (
     <div className="flex items-center gap-3 px-4 py-3.5">
@@ -64,10 +66,10 @@ function UserRow({ usuario, roleLoading, deleteLoading, onRoleChange, onDelete }
 
       {/* Role select */}
       <select
-        value={usuario.role}
-        onChange={(e) => onRoleChange(usuario.id, e.target.value as Role)}
+        value={pendingRole}
+        onChange={(e) => setPendingRole(e.target.value as Role)}
         disabled={roleLoading}
-        className={`text-xs font-medium rounded-lg px-2 py-1.5 border-0 outline-none cursor-pointer disabled:opacity-50 transition-colors ${roleBadgeCls[usuario.role]} bg-transparent`}
+        className={`text-xs font-medium rounded-lg px-2 py-1.5 border-0 outline-none cursor-pointer disabled:opacity-50 transition-colors ${roleBadgeCls[pendingRole]} bg-transparent`}
         style={{ WebkitAppearance: 'none', appearance: 'none' }}
       >
         {ROLES.map((r) => (
@@ -76,6 +78,17 @@ function UserRow({ usuario, roleLoading, deleteLoading, onRoleChange, onDelete }
           </option>
         ))}
       </select>
+
+      {/* Guardar */}
+      {hasChanges && (
+        <button
+          onClick={() => onRoleChange(usuario.id, pendingRole)}
+          disabled={roleLoading}
+          className="text-xs font-medium px-2.5 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-white disabled:opacity-50 transition-colors flex-shrink-0"
+        >
+          {roleLoading ? '...' : 'Guardar'}
+        </button>
+      )}
 
       {/* Delete */}
       <button
